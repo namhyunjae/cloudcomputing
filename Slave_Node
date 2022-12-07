@@ -1,0 +1,61 @@
+cloud@sw205:~$ ssh -i .ssh/cloud-test.pem ec2-user@ec2-3-35-8-134.ap-northeast-2.compute.amazonaws.com
+The authenticity of host 'ec2-3-35-8-134.ap-northeast-2.compute.amazonaws.com (3.35.8.134)' can't be established.
+ED25519 key fingerprint is SHA256:B/UEe4DbB9BoGCgmZIlzfXTMmP/oM/GwVwQPMvbxdWc.
+This host key is known by the following other names/addresses:
+    ~/.ssh/known_hosts:4: [hashed name]
+    ~/.ssh/known_hosts:6: [hashed name]
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes 
+Warning: Permanently added 'ec2-3-35-8-134.ap-northeast-2.compute.amazonaws.com' (ED25519) to the list of known hosts.
+Last login: Wed Dec  7 05:53:29 2022 from 113.198.137.246
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+28 package(s) needed for security, out of 40 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@ip-172-31-39-11 ~]$ sudo su -
+마지막 로그인: 수 12월  7 05:53:35 UTC 2022 일시 pts/0
+[root@ip-172-31-39-11 ~]# cd /etc/condor/config.d/
+[root@ip-172-31-39-11 config.d]# cat condor_config.local
+ALLOW_WRITE = *
+CONDOR_HOST = ip-172-31-40-40.ap-northeast-2.compute.internal
+DAEMON_LIST = MASTER, STARTD
+
+[root@ip-172-31-39-11 config.d]# cd --
+[root@ip-172-31-39-11 ~]# systemctl enable condor
+[root@ip-172-31-39-11 ~]# systemctl is-enabled condor
+enabled
+[root@ip-172-31-39-11 ~]# systemctl start condor
+[root@ip-172-31-39-11 ~]# systemctl status condor
+● condor.service - Condor Distributed High-Throughput-Computing
+   Loaded: loaded (/usr/lib/systemd/system/condor.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2022-12-07 08:16:01 UTC; 3min 19s ago
+ Main PID: 3061 (condor_master)
+   Status: "All daemons are responding"
+   CGroup: /system.slice/condor.service
+           ├─3061 /usr/sbin/condor_master -f
+           ├─3150 condor_procd -A /var/run/condor/procd_pipe -L /var/log/cond...
+           ├─3156 condor_shared_port -f
+           └─3183 condor_startd -f
+
+Dec 07 08:16:01 ip-172-31-39-11.ap-northeast-2.compute.internal systemd[1]: S...
+Dec 07 08:16:01 ip-172-31-39-11.ap-northeast-2.compute.internal htcondor[3096]: ...
+Dec 07 08:16:01 ip-172-31-39-11.ap-northeast-2.compute.internal htcondor[3109]: ...
+Dec 07 08:16:01 ip-172-31-39-11.ap-northeast-2.compute.internal htcondor[3112]: ...
+Dec 07 08:16:01 ip-172-31-39-11.ap-northeast-2.compute.internal htcondor[3115]: ...
+Dec 07 08:16:01 ip-172-31-39-11.ap-northeast-2.compute.internal htcondor[3119]: ...
+Dec 07 08:16:01 ip-172-31-39-11.ap-northeast-2.compute.internal htcondor[3122]: ...
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@ip-172-31-39-11 ~]# condor_status
+Name                                            OpSys      Arch   State     Act
+
+ip-172-31-39-11.ap-northeast-2.compute.internal LINUX      X86_64 Unclaimed Idl
+ip-172-31-40-40.ap-northeast-2.compute.internal LINUX      X86_64 Unclaimed Idl
+
+               Machines Owner Claimed Unclaimed Matched Preempting  Drain
+
+  X86_64/LINUX        2     0       0         2       0          0      0
+
+         Total        2     0       0         2       0          0      0
